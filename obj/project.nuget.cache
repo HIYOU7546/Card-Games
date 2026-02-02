@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "lTTGJWySxnY=",
+  "success": true,
+  "projectFilePath": "/workspaces/Card-Games/Card-Games.csproj",
+  "expectedPackageFiles": [
+    "/home/codespace/.nuget/packages/naudio/2.2.1/naudio.2.2.1.nupkg.sha512",
+    "/home/codespace/.nuget/packages/naudio.asio/2.2.1/naudio.asio.2.2.1.nupkg.sha512",
+    "/home/codespace/.nuget/packages/naudio.core/2.2.1/naudio.core.2.2.1.nupkg.sha512",
+    "/home/codespace/.nuget/packages/naudio.midi/2.2.1/naudio.midi.2.2.1.nupkg.sha512",
+    "/home/codespace/.nuget/packages/naudio.wasapi/2.2.1/naudio.wasapi.2.2.1.nupkg.sha512",
+    "/home/codespace/.nuget/packages/naudio.winmm/2.2.1/naudio.winmm.2.2.1.nupkg.sha512",
+    "/home/codespace/.nuget/packages/rainbowify/1.2.1/rainbowify.1.2.1.nupkg.sha512",
+  ],
+  "logs": []
+}
