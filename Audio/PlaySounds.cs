@@ -3,6 +3,19 @@ using NAudio.Wave;
 
 namespace Audio
 {
+    /// <summary>
+    /// Class for storing audio file references.
+    /// </summary>
+    public class AudioFiles
+    {
+        public static PlayAudio.AudioFile a1 = new PlayAudio.AudioFile("");
+        public static PlayAudio.AudioFile a2 = new PlayAudio.AudioFile("");
+        public static PlayAudio.AudioFile a3 = new PlayAudio.AudioFile("");
+    }
+
+    /// <summary>
+    /// Class for playing audio files.
+    /// </summary>
     public class PlayAudio
     {
         /// <summary>
@@ -18,37 +31,35 @@ namespace Audio
 
             try
             {
-                using (var audioFile = new AudioFileReader(soundName))
-                using (var outputDevice = new WaveOutEvent())
+                var audioFile = new AudioFileReader(soundName);
+                var outputDevice = new WaveOutEvent();
+                // Subscribe to the PlaybackStopped event
+                outputDevice.PlaybackStopped += (sender, e) =>
                 {
-                    // Subscribe to the PlaybackStopped event
-                    outputDevice.PlaybackStopped += (sender, e) =>
+                    // Signal the TaskCompletionSource when playback stops
+                    tcs.TrySetResult(true);
+                    // Dispose the device and file when done
+                    outputDevice.Dispose();
+                    audioFile.Dispose();
+                };
+
+                outputDevice.Init(audioFile);
+                outputDevice.Play();
+                if (stopLength > 0)
+                {
+                    // If a stop length is specified, create a timer to stop playback
+                    var timer = new System.Timers.Timer(stopLength);
+                    timer.Elapsed += (s, e) =>
                     {
-                        // Signal the TaskCompletionSource when playback stops
-                        tcs.SetResult(true);
-                        // Dispose the device and file when done
-                        outputDevice.Dispose();
-                        audioFile.Dispose();
+                        outputDevice.Stop();
+                        timer.Dispose();
                     };
-
-                    outputDevice.Init(audioFile);
-                    outputDevice.Play();
-                    if (stopLength > 0)
-                    {
-                        // If a stop length is specified, create a timer to stop playback
-                        var timer = new System.Timers.Timer(stopLength);
-                        timer.Elapsed += (s, e) =>
-                        {
-                            outputDevice.Stop();
-                            timer.Dispose();
-                        };
-                        timer.AutoReset = false; // Ensure it only runs once
-                        timer.Start();
-                    }
-
-                    // Wait for the TaskCompletionSource to be set
-                    return tcs.Task;
+                    timer.AutoReset = false; // Ensure it only runs once
+                    timer.Start();
                 }
+
+                // Wait for the TaskCompletionSource to be set
+                return tcs.Task;
             }
             catch (Exception ex)
             {
@@ -59,6 +70,9 @@ namespace Audio
             }
         }
 
+        /// <summary>
+        /// Struct for creating audio file references.
+        /// </summary>
         public struct AudioFile
         {
             public string FileLocation { get; set; }
