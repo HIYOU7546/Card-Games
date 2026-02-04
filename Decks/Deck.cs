@@ -70,8 +70,8 @@ namespace Decks
                 }
                 if (includeJokers)
                 {
-                    deckArray[index++] = "RJ";
-                    deckArray[index++] = "BJ";
+                    deckArray[index++] = "RJO";
+                    deckArray[index++] = "BJO";
                 }
             }
             this.deckArray = deckArray;
