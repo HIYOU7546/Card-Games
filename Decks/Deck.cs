@@ -7,27 +7,31 @@ namespace Decks
         /// <summary>
         /// The amount of decks to be used in the game
         /// </summary>
-        private double decks;
+        protected double decks { get; set; }
 
         /// <summary>
         /// Whether or not to include jokers in the deck
         /// </summary>
-        private bool includeJokers;
+        protected bool includeJokers { get; set; }
 
         /// <summary>
         /// The array representing the deck of cards
         /// </summary>
-        private string[] deckArray = [];
+        protected string[] deckArray = [];
+
+        private string[] deckArrayElements = [];
 
         /// <summary>
         /// Constructor for the Deck class
         /// </summary>
         /// <param name="includeJokers">The defualt is False.</param>
         /// <param name="decks">The defualt is 2 decks.</param>
-        public void Decks(bool includeJokers = false, int decks = 2)
+        public Deck(bool includeJokers = false, double decks = 2)
         {
             this.includeJokers = includeJokers;
             this.decks = decks;
+            
+            CreateDeck(decks);
         }
 
         /// <summary>
@@ -75,6 +79,7 @@ namespace Decks
                 }
             }
             this.deckArray = deckArray;
+            deckArrayElements = deckArray;
         }
 
         /// <summary>
@@ -83,6 +88,55 @@ namespace Decks
         public void ShuffleDeck()
         {
             Random.Shared.Shuffle(deckArray);
+        }
+
+        /// <summary>
+        /// Draws the next card from the top of the deck. [index 0]
+        /// </summary>
+        /// <returns>The card key for the card at that location.</returns>
+        public string DrawNextFromDeck()
+        {
+            Array.Copy(deckArray, 1, deckArray, 0, deckArray.Length - 1); // shift left
+            string card = deckArray.Last();
+            deckArray[deckArray.Length - 1] = "0";
+            return card;
+        }
+
+        /// <summary>
+        /// Replace a card back into the deck.
+        /// </summary>
+        /// <param name="card">The card key you are puting back into the deck.</param>
+        /// <param name="index">The index you are putting the card. Defualt is index 0 or the top of the deck.</param>
+        public void ReplaceIntoDeck(string card, int index = 0)
+        {
+            if (index > 0)
+            {
+                Array.Copy(deckArray, 0, deckArray, 1, deckArray.Length - 1); // shift right
+                deckArray[0] = card;
+            }
+            else
+            {
+                Array.Copy(deckArray, index, deckArray, index + 1, deckArray.Length - index - 1); // shift right
+                deckArray[index] = card;
+            }
+        }
+
+        public string DrawLastFromDeck()
+        {
+            string card = deckArray.Last();
+            deckArray[deckArray.Length - 1] = "0";
+            return card;
+        }
+
+        public string DrawFromIndex(int index)
+        {
+            if (index < 0 || index >= deckArray.Length)
+                throw new Exception("Invalid start index");
+
+            string valueToMove = deckArray[index];
+            Array.Copy(deckArray, index + 1, deckArray, index, deckArray.Length - index - 1); // shift left
+            deckArray[deckArray.Length - 1] = "0";
+            return valueToMove;
         }
     }
 }

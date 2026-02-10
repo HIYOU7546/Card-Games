@@ -5,10 +5,10 @@ namespace Decks
     /// <summary>
     /// Returns the ascii art of a card based on the suit and rank provided.
     /// </summary>
-    /// <param name="suit"></param>
-    /// <param name="rank"></param>
-    /// <returns></returns>
-    public static string[] GetCardAscii(string suit, string rank)
+    /// <param name="suit">The suit of the card you want</param>
+    /// <param name="rank">The rank of the card you want. (If you want facedown card leave blank)</param>
+    /// <returns>The array of the card you called</returns>
+    public static string[] GetCardAscii(string suit, string rank = "d")
     {
       if (char.Parse(suit) == 'R') suit = "red";
       else if (char.Parse(suit) == 'B') suit = "black";
@@ -53,11 +53,14 @@ namespace Decks
       }
     }
 
+    /// <summary>
+    /// Dictionary containing all the ascii art for each card.
+    /// </summary>
     private static Dictionary<string, string[]> CardArt = new Dictionary<string, string[]>
     {
       {"faceDownBack", [
       " _____ ",
-      "|#_#_#|",
+      "|#¯#¯#|",
       "|░\\░/░|",
       "|░░#░░|",
       "|░/░\\░|",
@@ -580,5 +583,10 @@ namespace Decks
     |♦ ♦ ♦||   % | |_%%%O|        | \ / |
     |♦ ♦ ♦||__%%ſ|                |  v  |
     |___0I|                       |____∀|
-
+                   _____ 
+                  |#¯#¯#|
+                  |░\░/░|
+                  |░░#░░|
+                  |░/░\░|
+                  |#_#_#|
 */
